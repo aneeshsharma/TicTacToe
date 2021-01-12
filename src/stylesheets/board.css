@@ -50,3 +50,12 @@
 .container .text {
     margin: 30px;
 }
+
+.restart-btn {
+    margin: 10px;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border: none;
+    font-size: 36px;
+}

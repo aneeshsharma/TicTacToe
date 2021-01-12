@@ -35,17 +35,28 @@ var buttonStyles = [
     { borderBottom: 'none', borderRight: 'none' },
 ];
 
+const initialState = {
+    boardState: initialBoard,
+    turn: 'X',
+    active: true,
+    winText: null,
+    checks: false,
+};
+
 class Board extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            boardState: initialBoard,
-            turn: 'X',
-            active: true,
-            winText: null,
-            checks: false,
+            ...initialState,
         };
     }
+
+    reset = () => {
+        this.setState({
+            ...initialState,
+            boardState: Array(9).fill(null),
+        });
+    };
 
     componentDidUpdate() {
         if (!this.state.active) {
@@ -162,7 +173,9 @@ class Board extends React.Component {
         if (!this.state.active) return;
         var turn = this.state.turn;
         var boardState = this.state.boardState;
-        if (boardState[index] == null) boardState[index] = turn;
+        if (boardState[index] !== null) return;
+
+        boardState[index] = turn;
         if (turn === 'X') {
             turn = 'O';
         } else {
@@ -214,6 +227,9 @@ class Board extends React.Component {
                 <div className="text" style={{ fontSize: '42px' }}>
                     {this.state.winText || <>&nbsp;</>}
                 </div>
+                <button className="restart-btn" onClick={this.reset}>
+                    Restart
+                </button>
             </div>
         );
     }
