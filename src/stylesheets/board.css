@@ -1,0 +1,24 @@
+.grid {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    height: 500px;
+    width: 500px;
+}
+
+.grid button {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    width: 33.33%;
+    height: 33.33%;
+    color: black;
+    background: white;
+    border: 3px solid black;
+}
