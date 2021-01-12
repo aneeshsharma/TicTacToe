@@ -43,6 +43,7 @@ class Board extends React.Component {
             turn: 'X',
             active: true,
             winText: null,
+            checks: false,
         };
     }
 
@@ -50,28 +51,86 @@ class Board extends React.Component {
         if (!this.state.active) {
             return;
         }
-        if (this.state.turn === 'X') {
+        if (!this.state.checks) {
             if (this.checkWinCondition('O')) {
                 this.setState({
                     active: false,
                     winText: 'O wins',
                 });
-            }
-        } else if (this.state.turn === 'O') {
-            if (this.checkWinCondition('X')) {
+            } else if (this.checkWinCondition('X')) {
                 this.setState({
                     active: false,
                     winText: 'X wins',
                 });
+            } else if (this.checkDrawCondition()) {
+                this.setState({
+                    active: false,
+                    winText: 'Game is Draw',
+                });
             }
-        }
-        if (this.checkDrawCondition()) {
             this.setState({
-                active: false,
-                winText: 'Game is Draw',
+                checks: true,
             });
         }
+        if (this.state.checks) {
+            this.computerMoves();
+        }
     }
+
+    computerMoves = () => {
+        if (!this.state.active) return;
+        if (this.state.turn === 'X') return;
+        var board = this.state.boardState;
+        var moved = false;
+
+        for (var seq of winSeq) {
+            var inPos = [];
+            for (var i of seq) {
+                if (board[i] === 'O') {
+                    inPos.push(i);
+                }
+            }
+            if (inPos.length >= 2) {
+                for (i of seq) {
+                    if (!inPos.includes(i) && board[i] === null) {
+                        this.handleMove(i);
+                        moved = true;
+                        return;
+                    }
+                }
+            }
+        }
+
+        if (moved) return;
+
+        for (var seq of winSeq) {
+            var inPos = [];
+            for (var i of seq) {
+                if (board[i] === 'X') {
+                    inPos.push(i);
+                }
+            }
+            if (inPos.length >= 2) {
+                for (i of seq) {
+                    if (!inPos.includes(i) && board[i] === null) {
+                        this.handleMove(i);
+                        moved = true;
+                        return;
+                    }
+                }
+            }
+        }
+
+        if (moved) return;
+
+        while (!moved) {
+            var random = Math.floor(Math.random() * 9);
+            if (board[random] === null) {
+                this.handleMove(random);
+                moved = true;
+            }
+        }
+    };
 
     checkDrawCondition = () => {
         if (this.state.active) {
@@ -113,6 +172,7 @@ class Board extends React.Component {
         this.setState({
             boardState,
             turn,
+            checks: false,
         });
     };
 
