@@ -45,8 +45,7 @@ class Board extends React.Component {
                     winText: 'O wins',
                 });
             }
-        }
-        if (this.state.turn === 'O') {
+        } else if (this.state.turn === 'O') {
             if (this.checkWinCondition('X')) {
                 this.setState({
                     active: false,
@@ -54,7 +53,21 @@ class Board extends React.Component {
                 });
             }
         }
+        if (this.checkDrawCondition()) {
+            this.setState({
+                active: false,
+                winText: 'Game is Draw',
+            });
+        }
     }
+
+    checkDrawCondition = () => {
+        if (this.state.active) {
+            if (this.state.boardState.filter((v) => v === null).length === 0)
+                return true;
+        }
+        return false;
+    };
 
     checkWinCondition = (turn) => {
         var board = this.state.boardState;
@@ -122,9 +135,12 @@ class Board extends React.Component {
 
         return (
             <div className="container">
+                <h1>Tic Tac Toe</h1>
                 <div className="text">{turnText}</div>
                 {grid}
-                <div className="text">{this.state.winText}</div>
+                <div className="text" style={{ fontSize: '42px' }}>
+                    {this.state.winText || <>&nbsp;</>}
+                </div>
             </div>
         );
     }
