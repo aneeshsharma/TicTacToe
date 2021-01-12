@@ -23,6 +23,18 @@ var images = {
     X: cross,
 };
 
+var buttonStyles = [
+    { borderTop: 'none', borderLeft: 'none' },
+    { borderTop: 'none' },
+    { borderTop: 'none', borderRight: 'none' },
+    { borderLeft: 'none' },
+    {},
+    { borderRight: 'none' },
+    { borderBottom: 'none', borderLeft: 'none' },
+    { borderBottom: 'none' },
+    { borderBottom: 'none', borderRight: 'none' },
+];
+
 class Board extends React.Component {
     constructor(props) {
         super(props);
@@ -111,6 +123,7 @@ class Board extends React.Component {
                     onClick={() => {
                         this.handleMove(index);
                     }}
+                    style={buttonStyles[index]}
                 >
                     {v && (
                         <img

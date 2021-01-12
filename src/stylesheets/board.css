@@ -35,6 +35,11 @@
     font-weight: bolder;
     background: none;
     border: 3px solid white;
+    transition-duration: 0.3s;
+}
+
+.grid button:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .grid img {
