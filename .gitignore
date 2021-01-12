@@ -10,7 +10,7 @@
 
 # production
 # needed to deploy on gh-pages
-/build
+#/build
 
 # misc
 .DS_Store
