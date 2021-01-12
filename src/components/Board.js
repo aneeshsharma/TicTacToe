@@ -48,6 +48,8 @@ class Board extends React.Component {
         super(props);
         this.state = {
             ...initialState,
+            computer: 0,
+            you: 0,
         };
     }
 
@@ -64,14 +66,18 @@ class Board extends React.Component {
         }
         if (!this.state.checks) {
             if (this.checkWinCondition('O')) {
+                var computer = this.state.computer;
                 this.setState({
                     active: false,
-                    winText: 'O wins',
+                    winText: 'Computer wins!',
+                    computer: computer + 1,
                 });
             } else if (this.checkWinCondition('X')) {
+                var you = this.state.you;
                 this.setState({
                     active: false,
-                    winText: 'X wins',
+                    winText: 'You win!',
+                    you: you + 1,
                 });
             } else if (this.checkDrawCondition()) {
                 this.setState({
@@ -215,13 +221,14 @@ class Board extends React.Component {
     render() {
         let grid = this.renderGrid();
 
-        let turnText = this.state.turn === 'X' ? "X's turn" : "O's turn";
+        let turnText = this.state.turn === 'X' ? 'Your turn' : "O's turn";
 
         if (!this.state.active) turnText = 'Game Over';
 
         return (
             <div className="container">
                 <h1>Tic Tac Toe</h1>
+                <div className="text">{`You: ${this.state.you} | Computer: ${this.state.computer}`}</div>
                 <div className="text">{turnText}</div>
                 {grid}
                 <div className="text" style={{ fontSize: '42px' }}>
