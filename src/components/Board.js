@@ -2,6 +2,9 @@ import React from 'react';
 
 import '../stylesheets/board.css';
 
+import zero from '../images/zero.svg';
+import cross from '../images/cross.svg';
+
 const initialBoard = Array(9).fill(null);
 
 const winSeq = [
@@ -15,6 +18,11 @@ const winSeq = [
     [2, 4, 6],
 ];
 
+var images = {
+    O: zero,
+    X: cross,
+};
+
 class Board extends React.Component {
     constructor(props) {
         super(props);
@@ -22,6 +30,7 @@ class Board extends React.Component {
             boardState: initialBoard,
             turn: 'X',
             active: true,
+            winText: null,
         };
     }
 
@@ -33,16 +42,16 @@ class Board extends React.Component {
             if (this.checkWinCondition('O')) {
                 this.setState({
                     active: false,
+                    winText: 'O wins',
                 });
-                alert('O wins');
             }
         }
         if (this.state.turn === 'O') {
             if (this.checkWinCondition('X')) {
                 this.setState({
                     active: false,
+                    winText: 'X wins',
                 });
-                alert('X wins');
             }
         }
     }
@@ -53,7 +62,7 @@ class Board extends React.Component {
         for (var seq of winSeq) {
             flag = true;
             for (var i of seq) {
-                if (board[i] != turn) {
+                if (board[i] !== turn) {
                     flag = false;
                     break;
                 }
@@ -90,7 +99,13 @@ class Board extends React.Component {
                         this.handleMove(index);
                     }}
                 >
-                    {v}
+                    {v && (
+                        <img
+                            src={images[v]}
+                            alt={v}
+                            style={{ filter: 'invert(100%)' }}
+                        />
+                    )}
                 </button>
             );
         });
@@ -101,7 +116,17 @@ class Board extends React.Component {
     render() {
         let grid = this.renderGrid();
 
-        return <div className="container">{grid}</div>;
+        let turnText = this.state.turn === 'X' ? "X's turn" : "O's turn";
+
+        if (!this.state.active) turnText = 'Game Over';
+
+        return (
+            <div className="container">
+                <div className="text">{turnText}</div>
+                {grid}
+                <div className="text">{this.state.winText}</div>
+            </div>
+        );
     }
 }
 
